@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  oc_id: MyString
+  cliente: 
+  sku: 
+  fechaEntrega: 
+  cantidad: 
+  urlNotificacion: MyString
+  estado: MyString
+  creacion: 
+  en_despacho: false
+
+two:
+  oc_id: MyString
+  cliente: 
+  sku: 
+  fechaEntrega: 
+  cantidad: 
+  urlNotificacion: MyString
+  estado: MyString
+  creacion: 
+  en_despacho: false

@@ -1,0 +1,2 @@
+class OrdenCompraRecibida < ApplicationRecord
+end
