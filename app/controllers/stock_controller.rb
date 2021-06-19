@@ -12,7 +12,7 @@ class StockController < ApplicationController
     dic = {}
     @almacenes.each do |almacen|
       @url = "https://dev.api-bodega.2021-1.tallerdeintegracion.cl/bodega/skusWithStock?almacenId=#{almacen}"  
-      response = RestClient.get @url, :Authorization => "INTEGRACION grupo18:"+get_hash("GET"+almacen)
+      response = RestClient.get @url, :Authorization => "INTEGRACION grupo18:"+get_hash("GET"+almacen, 0)
       result = JSON.parse response.to_str
       if result.length() == 0
         dic[almacen] = "almacen vacío"
@@ -38,11 +38,19 @@ class StockController < ApplicationController
   def delete
   end
 
-  def get_hash(data)
-    @token = "ivHP8KdoxvnD;:H"
-    @data = data
-    @hmac = OpenSSL::HMAC.digest(OpenSSL::Digest::Digest.new('sha1'),@token,@data)
-    @hash = Base64.encode64(@hmac).chomp
-    return @hash
+  def get_hash(data, number)
+    if number == 0
+      @token = "ivHP8KdoxvnD;:H" #Desarrollo
+      @data = data
+      @hmac = OpenSSL::HMAC.digest(OpenSSL::Digest::Digest.new('sha1'),@token,@data)
+      @hash = Base64.encode64(@hmac).chomp
+      return @hash
+    elsif number == 1 
+      @token = "jEm9J3d.HX7$gvN" #Producción
+      @data = data
+      @hmac = OpenSSL::HMAC.digest(OpenSSL::Digest::Digest.new('sha1'),@token,@data)
+      @hash = Base64.encode64(@hmac).chomp
+      return @hash
+    end
   end
 end
