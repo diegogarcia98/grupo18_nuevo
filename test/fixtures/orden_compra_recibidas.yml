@@ -2,22 +2,22 @@
 
 one:
   oc_id: MyString
-  cliente: 
+  cliente: MyString
   sku: 
-  fechaEntrega: 
+  fechaEntrega: 2021-06-20 17:25:52
   cantidad: 
   urlNotificacion: MyString
   estado: MyString
-  creacion: 
+  creacion: 2021-06-20 17:25:52
   en_despacho: false
 
 two:
   oc_id: MyString
-  cliente: 
+  cliente: MyString
   sku: 
-  fechaEntrega: 
+  fechaEntrega: 2021-06-20 17:25:52
   cantidad: 
   urlNotificacion: MyString
   estado: MyString
-  creacion: 
+  creacion: 2021-06-20 17:25:52
   en_despacho: false
