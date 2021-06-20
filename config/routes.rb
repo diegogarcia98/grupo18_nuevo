@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   get 'orden_compra/new'
   get 'orden_compra/index'
   get 'orden_compra/show'
-  get 'orden_compra/edit'
+  patch 'orden_compra/:oc_id', to: 'orden_compra#actualizar_estado'
   ## STOCKS
   get 'stocks', to: 'stock#index'
   get 'stock/show'

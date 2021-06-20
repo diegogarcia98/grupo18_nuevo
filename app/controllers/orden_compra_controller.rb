@@ -60,6 +60,28 @@ class OrdenCompraController < ApplicationController
   def show
   end
 
-  def edit
+  def actualizar_estado
+	decision = params[:estado]
+	url_api = "https://dev.oc.2021-1.tallerdeintegracion.cl/oc/"
+	#falta decidir que pasa cuando no vienen los parámetros correctos
+	#Revisar si existe registro de este id en nuestra BD  
+	oc = Orden_compra_recibida.find_by(oc_id: params[:oc_id])
+	if oc == nil 
+		render status: 404   #no existe id con estos datos en nuestra BD
+	else
+		if decision == "aceptada"
+			#avisamos a la API OC
+			HTTParty.post(url_api+"recepcionar/"+params[:oc_id])
+			#avisamos al grupo correspondiente a la dirección entregada
+			HTTParty.patch(oc.urlNotificacion, body: {_id: oc.oc_id, estado: "aceptada"})
+			render status: 204
+		elsif decision == "rechazada"
+			#avisamos a la API OC
+			HTTParty.post(url_api+"rechazar/"+params[:oc_id])
+			#avisamos al grupo correspondiente a la dirección entregada
+			HTTParty.patch(oc.urlNotificacion, body: {_id: oc.oc_id, estado: "rechazada"})
+			render status: 204
+		end
+	end
   end
 end

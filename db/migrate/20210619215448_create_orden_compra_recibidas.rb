@@ -2,7 +2,7 @@ class CreateOrdenCompraRecibidas < ActiveRecord::Migration[6.1]
   def change
     create_table :orden_compra_recibidas do |t|
       t.string :oc_id
-      t.string, :cliente
+      t.string :cliente
       t.bigint :sku
       t.bigint :fechaEntrega
       t.int :cantidad
