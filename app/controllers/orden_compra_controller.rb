@@ -2,7 +2,7 @@
 require 'net/http'
 ## para el js date
 require 'date'
-
+require 'httparty'
 
 =begin
 oc = Orden_compra_recibida.find_by(oc_id: params[:oc_id])
