@@ -23,34 +23,35 @@ class OrdenCompraController < ApplicationController
 		oc_id = params[:oc_id]
 		# se revisa que no este duplicada FALTA
 		if OrdenCompraRecibida.exists?(oc_id: params[:oc_id])
-			oc =OrdenCompraRecibida.find_by(oc_id: params[:oc_id])
-			render json: {mensaje: "OC ya fue recibida"},status: :bad_request
+		  oc =OrdenCompraRecibida.find_by(oc_id: params[:oc_id])
+		  render json: {mensaje: "OC ya fue recibida"},status: :bad_request
 		# Si esta duplicada se responde con un error 400 Bad request y con un json con {"mensaje": "OC ya fue recibida"}
-		# obtenemos url y se hace el request
-	  	else
+		# obtenemos url y se hace el request  
+		else
 		  url = url_api_oc + "/obtener/" + oc_id
-		  @oc_json = HTTParty.get(url).parsed_response
-		  ## se guarda la informacion en la bd
-		  fecha_entrega = Time.at(oc_json['fechaEntrega'].to_i/1000)
-		  creada_en = Time.now
-		  # ejemplo para crear instancias en un modelo: artist = Artist.create(artist_id: artist_id, name: artist_name, age: artist_age, albums_url: albums_url, tracks_url: tracks_url, self: self_url)
-		  oc_nueva = OrdenCompraRecibida.create(oc_id: oc_json['id'], cliente: oc_json['cliente'] , sku: oc_json['sku'], fechaEntrega: fecha_entrega, 
-			  cantidad: oc_json['cantidad'], urlNotificacion: oc_json['urlNotificacion'], estado: "recibida", creacion: creada_en , en_despacho: false)
-		  # se guadrda y se hace el response
-		  if oc_nueva.save
-			oc = OrdenCompraRecibida.find_by(oc_id: params[:oc_id])
-			render json: {id: oc.oc_id, 
-			  cliente: oc.cliente, 
-			  sku: oc.sku, 
-			  fechaEntrega: oc.fechaEntrega.to_i,
-			  cantidad: oc.cantidad,
-			  urlNotificacion: oc.urlNotificacion,
-			  estado: oc.estado},status: :created
+		  oc_json = HTTParty.get(url).parsed_response
+		  if !oc_json.nil? and !oc_json.empty?
+			## se guarda la informacion en la bd
+			fecha_entrega = Time.at(oc_json['fechaEntrega'].to_i/1000)
+			creada_en = Time.now
+			# ejemplo para crear instancias en un modelo: artist = Artist.create(artist_id: artist_id, name: artist_name, age: artist_age, albums_url: albums_url, tracks_url: tracks_url, self: self_url)
+			oc_nueva = OrdenCompraRecibida.create(oc_id: oc_json['id'], cliente: oc_json['cliente'] , sku: oc_json['sku'], fechaEntrega: fecha_entrega, cantidad: oc_json['cantidad'], urlNotificacion: oc_json['urlNotificacion'], estado: "recibida", creacion: creada_en , en_despacho: false) # se guadrda y se hace el response
+			if oc_nueva.save
+			  oc = OrdenCompraRecibida.find_by(oc_id: params[:oc_id])
+			  render json: {id: oc.oc_id, 
+				cliente: oc.cliente, 
+				sku: oc.sku, 
+				fechaEntrega: oc.fechaEntrega.to_i,
+				cantidad: oc.cantidad,
+				urlNotificacion: oc.urlNotificacion,
+				estado: oc.estado},status: :created
+			else
+			  render status: :bad_request
+			end
 		  else
-			render status: :bad_request
+			render json: {"mensaje": "id no existe"}, status: 404
 		  end
-	  	end
-	  	
+		end    
 	end
 
   def index
