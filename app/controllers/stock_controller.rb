@@ -20,7 +20,7 @@ class StockController < ApplicationController
         dic[almacen] = result
       end
     end  
-    render json: dic, status: 200
+    render json: dic["60bd3477f955380004edaa3a"], status: 200
       
     
   end

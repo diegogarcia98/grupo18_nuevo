@@ -72,13 +72,13 @@ class OrdenCompraController < ApplicationController
 			#avisamos a la API OC
 			HTTParty.post(url_api+"recepcionar/"+params[:oc_id])
 			#avisamos al grupo correspondiente a la dirección entregada
-			HTTParty.patch(oc.urlNotificacion, body: {_id: oc.oc_id, estado: "aceptada"})
+			HTTParty.patch(oc.urlNotificacion, body: {_id: oc.oc_id, estado: paramas[:estado]})
 			render status: 204
 		elsif decision == "rechazada"
 			#avisamos a la API OC
 			HTTParty.post(url_api+"rechazar/"+params[:oc_id])
 			#avisamos al grupo correspondiente a la dirección entregada
-			HTTParty.patch(oc.urlNotificacion, body: {_id: oc.oc_id, estado: "rechazada"})
+			HTTParty.patch(oc.urlNotificacion, body: {_id: oc.oc_id, estado: paramas[:estado]})
 			render status: 204
 		end
 	end
